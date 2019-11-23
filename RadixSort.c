@@ -1,6 +1,8 @@
 #include <stdio.h>
+#define INCREMENT 2746
+#define MULTIPLY 6437
 
-void radixSort(int* array, int length){
+void radixSort(int *array, int length){
 	for (int nibbleIndex=0; nibbleIndex<8; nibbleIndex++){
 	
 		int newArray[length];
@@ -21,11 +23,23 @@ void radixSort(int* array, int length){
 	}
 }
 
-int main(){
-	int test[]={3,8,3785,53464,7,89,70,74,535,4,53,4245,25,2,12,7,17,5};
-	radixSort(test,18);
-	for (int i=0;i<18;i++){
-		printf("%d ",test[i]);
+void randomGen(int *returnArray, int length){
+	int seed=0xbeeeeeef;
+	
+	for (int i=0;i<length;i++){
+		seed*=MULTIPLY;
+		seed+=INCREMENT;
+		if (seed<0) seed=seed*-1;
+		returnArray[i]=seed;
 	}
-	printf("\n");
+}
+
+int main(){
+	int arrayLen=600000;
+	int test[arrayLen];
+	randomGen(test,arrayLen);
+	radixSort(test,arrayLen);
+	for (int i=0;i<arrayLen;i++){
+		printf("%d \n",test[i]);
+	}
 }
