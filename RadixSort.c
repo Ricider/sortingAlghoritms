@@ -1,12 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #define INCREMENT 2746
 #define MULTIPLY 6437
 
 void radixSort(int *array, int length){
 	for (int nibbleIndex=0; nibbleIndex<8; nibbleIndex++){
 	
-		int newArray[length];
-		int temporary[length];
+		int* temporary=(int*) calloc(length, sizeof(int));
+		int* newArray=(int*) calloc(length, sizeof(int));
 		int nextElement=0;
 		
 		for (int i=0;i<length;i++) {
@@ -20,6 +22,8 @@ void radixSort(int *array, int length){
 			}
 		}
 		for (int i=0;i<length;i++) array[i]=newArray[i];
+		free(temporary);
+		free(newArray);
 	}
 }
 
@@ -35,11 +39,19 @@ void randomGen(int *returnArray, int length){
 }
 
 int main(){
-	int arrayLen=600000;
-	int test[arrayLen];
+	int arrayLen=100000000;
+	int* test=(int*) calloc(arrayLen, sizeof(int));
+	clock_t t;
+    t = clock();
 	randomGen(test,arrayLen);
+    t = clock() - t; 
+    double time_taken = ((double)t)/CLOCKS_PER_SEC;
+    printf("Number generation took %f seconds to execute for %d elements \n", time_taken, arrayLen); 
+    t = clock(); 
 	radixSort(test,arrayLen);
-	for (int i=0;i<arrayLen;i++){
-		printf("%d \n",test[i]);
-	}
+    t = clock() - t; 
+    time_taken = ((double)t)/CLOCKS_PER_SEC;
+    printf("Radix sort took %f seconds to execute for %d elements \n", time_taken, arrayLen); 
+	//for (int i=0;i<arrayLen;i++) printf("%d \n",test[i]);
+	free(test);
 }
